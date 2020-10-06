@@ -1,6 +1,7 @@
-import 'package:bookmarks/views/root.dart';
 import 'package:flutter/material.dart';
 
+import 'layouts/DefaultLayout.dart';
+
 void main() {
-  runApp(Root());
+  runApp(DefaultLayout());
 }
