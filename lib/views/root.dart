@@ -1,6 +1,5 @@
+import 'package:bookmarks/widgets/HomeWidget.dart';
 import 'package:flutter/material.dart';
-
-import 'home.dart';
 
 class Root extends StatelessWidget {
   // This widget is the root of your application.
@@ -15,7 +14,7 @@ class Root extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(title: 'Bookmarks'),
+      home: HomeWidget(title: 'Bookmarks'),
     );
   }
 }

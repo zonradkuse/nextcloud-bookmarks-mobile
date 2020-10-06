@@ -1,25 +1,12 @@
+import 'package:bookmarks/abstractions/WidgetView.dart';
+import 'package:bookmarks/controllers/HomeController.dart';
+import 'package:bookmarks/widgets/HomeWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key, this.title}) : super(key: key);
+class HomeView extends WidgetView<HomeWidget, HomeController> {
+  const HomeView (state, {Key key}) : super(state, key: key);
 
-  final String title;
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  // TODO why does the state have the view?
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,14 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '${state.counter}',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: state.incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
