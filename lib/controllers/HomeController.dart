@@ -1,3 +1,4 @@
+import 'package:bookmarks/models/Bookmark.dart';
 import 'package:bookmarks/models/User.dart';
 import 'package:bookmarks/services/BookmarkService.dart';
 import 'package:bookmarks/widgets/HomeWidget.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 class HomeController extends Controller<HomeWidget> {
   int _counter = 0;
 
-  String _bookmarks = "";
+  List<Bookmark> _bookmarks = List();
 
   HomeController() {
     // initialize bookmarks once
@@ -16,7 +17,7 @@ class HomeController extends Controller<HomeWidget> {
   }
 
   int get counter => _counter;
-  String get bookmarks => _bookmarks;
+  List<Bookmark> get bookmarks => _bookmarks;
 
   void incrementCounter() {
     setState(() {
@@ -26,7 +27,7 @@ class HomeController extends Controller<HomeWidget> {
 
   Future<void> retrieveBookmarks() async {
     User user = await User.findOne();
-    String bookmarks = await BookmarkService.of(user).retrieveAllBookmarks();
+    List<Bookmark> bookmarks = await BookmarkService.of(user).retrieveAllBookmarks();
 
     setState(() {
       _bookmarks = bookmarks;

@@ -1,10 +1,9 @@
-import 'package:bookmarks/abstractions/WidgetView.dart';
 import 'package:bookmarks/controllers/HomeController.dart';
 import 'package:bookmarks/abstractions/AuthenticatedView.dart';
+import 'package:bookmarks/models/Bookmark.dart';
 import 'package:bookmarks/widgets/HomeWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class HomeView extends AuthenticatedView<HomeWidget, HomeController> {
 
@@ -14,24 +13,15 @@ class HomeView extends AuthenticatedView<HomeWidget, HomeController> {
   Widget doBuild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: LiquidPullToRefresh(
+      body: RefreshIndicator(
         onRefresh: state.retrieveBookmarks,
         child: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
           child: ListView(
+            controller: ScrollController(),
             physics: AlwaysScrollableScrollPhysics(),
-            children: [
-              Card(
-                child: ListTile(
-                  title: Text("${state.bookmarks}"),
-                ),
-              ),
-            ],
+            children: _rows(context),
           ),
         ),
       ),
@@ -41,5 +31,60 @@ class HomeView extends AuthenticatedView<HomeWidget, HomeController> {
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  List<Widget> _rows(BuildContext context) {
+    List<Widget> result = List();
+    assert(state.bookmarks != null);
+    for (Bookmark bookmark in state.bookmarks) {
+      result.add(
+        InkWell(
+          onTap: () {
+            final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
+
+            // Find the Scaffold in the widget tree and use it to show a SnackBar.
+            Scaffold.of(context).showSnackBar(snackBar);
+          },
+          child: Card(
+            elevation: 2,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: ListTile(
+                    title: Text("${bookmark.title}"),
+                    subtitle: Text("${bookmark.description != "" ? bookmark.description : bookmark.url}"),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ),
+                PopupMenuButton(
+                  elevation: 5,
+                  icon: Icon(Icons.more_vert),
+                  itemBuilder: (context) {
+                    return <PopupMenuEntry>[
+                      PopupMenuItem(child: Text('Edit')),
+                      PopupMenuItem(child: Text('Share')),
+                      PopupMenuDivider(),
+                      PopupMenuItem(child: Text('Delete', style: TextStyle(color: Colors.red),))
+                    ];
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (result.length == 0) {
+      result.add(
+        Card(
+          child: Center(
+            child: Text("No bookmarks, yet :-(")
+          ),
+        )
+      );
+    }
+
+    return result;
   }
 }

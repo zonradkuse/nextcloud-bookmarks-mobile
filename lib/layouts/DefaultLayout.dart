@@ -14,7 +14,9 @@ class DefaultLayout extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeWidget(title: 'Bookmarks'),
+      home: Scaffold(
+        body: HomeWidget(title: 'Bookmarks'),
+      )
     );
   }
 }

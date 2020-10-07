@@ -4,6 +4,7 @@ import 'package:bookmarks/models/Bookmark.dart';
 import 'package:bookmarks/models/User.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:validators/validators.dart';
 
 class BookmarkService {
   final User user;
@@ -20,19 +21,24 @@ class BookmarkService {
   // private initializing constructor of this factory
   BookmarkService._(this.user);
 
-  Future<String> retrieveAllBookmarks() async {
+  Future<List<Bookmark>> retrieveAllBookmarks() async {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${this.user.username}:${this.user.appPassword}'));
     http.Response response = await http.get(
       this.user.serverUrl + _ENDPOINT_BASE,
       headers: <String, String>{'authorization': basicAuth}
     );
 
-    if (response.statusCode == 200) {
-      // success
-      return response.body;
+    List<Bookmark> result = List<Bookmark>();
+    if (response.statusCode == 200 && isJSON(response.body)) {
+      Map<String, dynamic> parsed = jsonDecode(response.body);
+      if (parsed["status"] != "success") return result;
+
+      for (Map<String, dynamic> element in parsed["data"]) {
+        result.add(Bookmark.fromJson(element));
+      }
     }
 
-    return "";
+    return result;
   }
 
   static BookmarkService of(User user) {

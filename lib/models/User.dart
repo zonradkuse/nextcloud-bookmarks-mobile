@@ -33,7 +33,7 @@ class User {
   Future<User> insert() async {
     final Database db = await DatabaseProvider.database;
     SecureStoreProvider.store.write(
-        key: "${PREFIX_PW_KEY}_${this._serverBaseUrl}_${_username}",
+        key: "${PREFIX_PW_KEY}_${_serverBaseUrl}_$_username",
         value: this._appPassword
     );
 
@@ -52,12 +52,16 @@ class User {
     final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME, limit: 1);
 
     // no user found!
-    if (maps.length == 0) return null;
+    if (maps.length == 0) return User.empty();
 
     var serverUrl = maps.first[COLUMN_NAME_SERVER_BASE_URL];
     var username = maps.first[COLUMN_NAME_USER_NAME];
-    String password = await SecureStoreProvider.store.read(key: "${PREFIX_PW_KEY}_${serverUrl}_${username}");
+    String password = await SecureStoreProvider.store.read(key: "${PREFIX_PW_KEY}_${serverUrl}_$username");
 
     return User(serverUrl, username, password);
+  }
+
+  static User empty() {
+    return User(null, null, null);
   }
 }
