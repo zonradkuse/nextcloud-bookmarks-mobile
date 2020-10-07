@@ -1,14 +1,15 @@
 import 'package:bookmarks/abstractions/WidgetView.dart';
 import 'package:bookmarks/controllers/HomeController.dart';
+import 'package:bookmarks/abstractions/AuthenticatedView.dart';
 import 'package:bookmarks/widgets/HomeWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends WidgetView<HomeWidget, HomeController> {
+class HomeView extends AuthenticatedView<HomeWidget, HomeController> {
   const HomeView (state, {Key key}) : super(state, key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget doBuild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -42,6 +43,7 @@ class HomeView extends WidgetView<HomeWidget, HomeController> {
               '${state.counter}',
               style: Theme.of(context).textTheme.headline4,
             ),
+            Text("${state.bookmarks}"),
           ],
         ),
       ),
@@ -49,7 +51,7 @@ class HomeView extends WidgetView<HomeWidget, HomeController> {
         onPressed: state.incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
