@@ -8,13 +8,15 @@ abstract class AuthenticatedView<TWidget, TController> extends WidgetView<TWidge
 
   const AuthenticatedView(state, {Key key}) : super(state, key: key);
 
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       // TODO performance. This is called whenever any action happens.
       // i.e. for any action we perform 2 db queries which we don't actually need
       future: User.findOne(),
-      builder: (BuildContext context, snapshot) {
-        if (snapshot.data == null) {
+      initialData: User.empty(),
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        if (snapshot.data.username == null) {
           // show LoginWidget if we couldn't find any user
           return LoginWidget();
         } else {
