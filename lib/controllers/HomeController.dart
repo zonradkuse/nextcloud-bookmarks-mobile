@@ -11,6 +11,7 @@ class HomeController extends Controller<HomeWidget> {
   String _bookmarks = "";
 
   HomeController() {
+    // initialize bookmarks once
     this.retrieveBookmarks();
   }
 
@@ -23,7 +24,7 @@ class HomeController extends Controller<HomeWidget> {
     });
   }
 
-  void retrieveBookmarks() async {
+  Future<void> retrieveBookmarks() async {
     User user = await User.findOne();
     String bookmarks = await BookmarkService.of(user).retrieveAllBookmarks();
 
