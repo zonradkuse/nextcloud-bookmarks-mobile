@@ -40,10 +40,7 @@ class HomeView extends AuthenticatedView<HomeWidget, HomeController> {
       result.add(
         InkWell(
           onTap: () {
-            final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
-
-            // Find the Scaffold in the widget tree and use it to show a SnackBar.
-            Scaffold.of(context).showSnackBar(snackBar);
+            state.launchInBrowser(bookmark.url);
           },
           child: Card(
             elevation: 2,

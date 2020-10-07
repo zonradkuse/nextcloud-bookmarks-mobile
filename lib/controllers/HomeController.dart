@@ -5,6 +5,7 @@ import 'package:bookmarks/widgets/HomeWidget.dart';
 import 'package:bookmarks/views/HomeView.dart';
 import 'package:bookmarks/abstractions/Controller.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends Controller<HomeWidget> {
   int _counter = 0;
@@ -32,6 +33,18 @@ class HomeController extends Controller<HomeWidget> {
     setState(() {
       _bookmarks = bookmarks;
     });
+  }
+
+  Future<void> launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
