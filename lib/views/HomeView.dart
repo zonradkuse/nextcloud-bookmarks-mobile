@@ -5,6 +5,12 @@ import 'package:bookmarks/widgets/HomeWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+enum BookmarkAction {
+  EDIT,
+  DELETE,
+  SHARE
+}
+
 class HomeView extends AuthenticatedView<HomeWidget, HomeController> {
 
   const HomeView (state, {Key key}) : super(state, key: key);
@@ -53,15 +59,40 @@ class HomeView extends AuthenticatedView<HomeWidget, HomeController> {
                     visualDensity: VisualDensity.compact,
                   ),
                 ),
-                PopupMenuButton(
+                PopupMenuButton<BookmarkAction>(
                   elevation: 5,
+                  onSelected: (BookmarkAction action) {
+                    switch(action) {
+                      case(BookmarkAction.EDIT):
+                        // call controller
+                        break;
+                      case(BookmarkAction.SHARE):
+                        // call controller
+                        break;
+                      case(BookmarkAction.DELETE):
+                        // make sure and call controller
+                        break;
+                    }
+                  },
                   icon: Icon(Icons.more_vert),
-                  itemBuilder: (context) {
-                    return <PopupMenuEntry>[
-                      PopupMenuItem(child: Text('Edit')),
-                      PopupMenuItem(child: Text('Share')),
+                  itemBuilder: (BuildContext context) {
+                    return <PopupMenuEntry<BookmarkAction>>[
+                      PopupMenuItem(
+                        value: BookmarkAction.EDIT,
+                        child: Text('Edit')
+                      ),
+                      PopupMenuItem(
+                        value: BookmarkAction.SHARE,
+                        child: Text('Share')
+                      ),
                       PopupMenuDivider(),
-                      PopupMenuItem(child: Text('Delete', style: TextStyle(color: Colors.red),))
+                      PopupMenuItem(
+                        value: BookmarkAction.DELETE,
+                        child: Text(
+                          'Delete',
+                          style: TextStyle(color: Colors.red),
+                        )
+                      )
                     ];
                   },
                 ),
