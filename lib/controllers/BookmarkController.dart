@@ -28,6 +28,12 @@ class BookmarkController extends Controller<HomeWidget> {
     });
   }
 
+  void resetBookmarks() {
+    setState(() {
+      _bookmarks = null;
+    });
+  }
+
   Future<void> launchInBrowser(String url) async {
     if (await canLaunch(url)) {
       await launch(
