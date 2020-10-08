@@ -1,4 +1,5 @@
 import 'package:bookmarks/controllers/LoginController.dart';
+import 'package:bookmarks/views/CenteredCard.dart';
 import 'package:bookmarks/views/login/NextcloudLoginWebView.dart';
 import 'package:bookmarks/widgets/LoginWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,45 +9,60 @@ import 'package:validators/validators.dart';
 import '../../abstractions/WidgetView.dart';
 
 class LoginView extends WidgetView<LoginWidget, LoginController> {
-  LoginView (state, {Key key}) : super(state, key: key);
+  LoginView(state, {Key key}) : super(state, key: key);
 
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Nextcloud Login"),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text("Please enter your Nextcloud server url to sync your bookmarks with:"),
-              TextFormField(
-                controller: _textEditingController,
-                validator: (String value) {
-                  return isURL(value, requireProtocol: true) ? 'Please use a valid url' : null;
-                },
-                decoration: InputDecoration(
-                  hintText: "url",
-                  helperText: "e.g. https://cloud.example.com/",
+      appBar: AppBar(
+        title: Text("Nextcloud Login"),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(12),
+          child: CenteredCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Enter your Nextcloud URL",
+                    style: Theme.of(context).textTheme.headline6),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      color: Colors.blueAccent,
+                      onPressed: () {
+                        if (!isURL(_textEditingController.text)) {
+                          SnackBar snackbar = SnackBar(content: Text("Please provide a valid URL"));
+                          Scaffold.of(context).showSnackBar(snackbar);
+                          return;
+                        }
+                        state.setBaseUrl(_textEditingController.text);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                NextcloudLoginWebView(state)));
+                      },
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: _textEditingController,
+                        showCursor: true,
+                        decoration: InputDecoration(
+                          helperText: "e.g. https://cloud.example.com/",
+                          isDense: true,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              RaisedButton(
-                onPressed: () {
-                  state.setBaseUrl(_textEditingController.text);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => NextcloudLoginWebView(state))
-                  );
-                },
-                child: Text("Let's go!"),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      );
+      ),
+    );
   }
-  
 }
