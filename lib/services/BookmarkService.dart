@@ -23,10 +23,7 @@ class BookmarkService extends Service {
 
   Future<List<Bookmark>> retrieveAllBookmarks() async {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${this.user.username}:${this.user.appPassword}'));
-    http.Response response = await http.get(
-      this.user.serverUrl + _ENDPOINT_BASE,
-      headers: <String, String>{'authorization': basicAuth}
-    );
+    http.Response response = await getRequest();
 
     List<Bookmark> result = List<Bookmark>();
     if (response.statusCode == 200 && isJSON(response.body)) {
