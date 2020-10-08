@@ -34,6 +34,15 @@ class BookmarkController extends Controller<HomeWidget> {
     });
   }
 
+  Future<void> delete(Bookmark bookmark) async {
+    User user = await User.findOne();
+    BookmarkService.of(user).delete(bookmark);
+
+    setState(() {
+      _bookmarks.remove(bookmark);
+    });
+  }
+
   Future<void> launchInBrowser(String url) async {
     if (await canLaunch(url)) {
       await launch(

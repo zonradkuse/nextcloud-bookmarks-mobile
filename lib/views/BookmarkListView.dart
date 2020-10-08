@@ -68,7 +68,10 @@ class BookmarkListView
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 16.0, 0.0, 8.0),
           child: TextButton(
-            onPressed: state.retrieveBookmarks,
+            onPressed: () {
+              state.resetBookmarks();
+              state.retrieveBookmarks();
+            },
             child: Text('Refresh'),
           ),
         ),
@@ -121,6 +124,7 @@ class BookmarkListView
             break;
           case BookmarkAction.DELETE:
             // make sure and call controller
+            state.delete(bookmark);
             break;
         }
       },

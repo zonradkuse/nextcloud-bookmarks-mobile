@@ -10,6 +10,7 @@ class Bookmark {
   Bookmark(this._id, this._url, this._title, this._description, this._tags,
       this._folders);
 
+  int get id => _id;
   String get url => _url;
   String get title => _title;
   String get description => _description;

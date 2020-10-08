@@ -2,13 +2,12 @@ import 'dart:convert';
 
 import 'package:bookmarks/models/Bookmark.dart';
 import 'package:bookmarks/models/User.dart';
+import 'package:bookmarks/services/Service.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:validators/validators.dart';
 
-class BookmarkService {
-  final User user;
-
+class BookmarkService extends Service {
   static const _ENDPOINT_BASE = "/index.php/apps/bookmarks/public/rest/v2/bookmark";
 
   static final Map<User, BookmarkService> _cache =
@@ -20,7 +19,7 @@ class BookmarkService {
   }
 
   // private initializing constructor of this factory
-  BookmarkService._(this.user);
+  BookmarkService._(user) : super(endpointBase: _ENDPOINT_BASE, user: user);
 
   Future<List<Bookmark>> retrieveAllBookmarks() async {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${this.user.username}:${this.user.appPassword}'));
@@ -40,6 +39,10 @@ class BookmarkService {
     }
 
     return result;
+  }
+  
+  void delete(Bookmark bookmark) {
+    super.deleteRequest(bookmark.id);
   }
 
   static BookmarkService of(User user) {
