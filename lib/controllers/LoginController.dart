@@ -3,6 +3,7 @@ import 'package:bookmarks/models/User.dart';
 import 'package:bookmarks/widgets/LoginWidget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bookmarks/views/login/LoginView.dart';
+import 'package:validators/validators.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginController extends Controller<LoginWidget> {
@@ -33,9 +34,17 @@ class LoginController extends Controller<LoginWidget> {
     return null;
   }
 
+  String _preprocessUrl(String url) {
+    if (!url.startsWith("http")) {
+      url = "https://$url";
+    }
+
+    return url;
+  }
+
   setBaseUrl(String url) {
     setState(() {
-      this._baseUrl = url;
+      this._baseUrl = _preprocessUrl(url);
     });
   }
 
