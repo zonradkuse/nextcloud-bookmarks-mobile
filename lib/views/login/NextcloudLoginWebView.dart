@@ -34,6 +34,7 @@ class NextcloudLoginWebView extends WidgetView<LoginWidget, LoginController> {
           }
 
           // we have a user -- navigate back to home!
+          Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => HomeWidget()),
           );
