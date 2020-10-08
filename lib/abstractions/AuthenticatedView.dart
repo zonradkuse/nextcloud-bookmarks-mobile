@@ -14,9 +14,9 @@ abstract class AuthenticatedView<TWidget, TController> extends WidgetView<TWidge
       // TODO performance. This is called whenever any action happens.
       // i.e. for any action we perform 2 db queries which we don't actually need
       future: User.findOne(),
-      initialData: User.empty(),
+      initialData: null,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-        if (snapshot.data.username == null) {
+        if (snapshot.data == null) {
           // show LoginWidget if we couldn't find any user
           return LoginWidget();
         } else {

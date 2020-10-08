@@ -1,11 +1,9 @@
-import 'package:bookmarks/controllers/HomeController.dart';
+import 'package:bookmarks/controllers/BookmarkController.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomeWidget extends StatefulWidget {
-  HomeWidget({Key key, this.title}) : super(key: key);
-
-  final String title;
+  HomeWidget({Key key}) : super(key: key);
 
   @override
-  HomeController createState() => HomeController();
+  BookmarkController createState() => BookmarkController();
 }

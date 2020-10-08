@@ -8,7 +8,9 @@ import 'package:validators/validators.dart';
 import '../abstractions/WidgetView.dart';
 
 class LoginView extends WidgetView<LoginWidget, LoginController> {
-  const LoginView (state, {Key key}) : super(state, key: key);
+  LoginView (state, {Key key}) : super(state, key: key);
+
+  final TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,7 @@ class LoginView extends WidgetView<LoginWidget, LoginController> {
             children: [
               const Text("Please enter your Nextcloud server url to sync your bookmarks with:"),
               TextFormField(
-                // TODO update even before submit
-                onFieldSubmitted: this.state.setBaseUrl,
+                controller: _textEditingController,
                 validator: (String value) {
                   return isURL(value, requireProtocol: true) ? 'Please use a valid url' : null;
                 },
@@ -34,10 +35,11 @@ class LoginView extends WidgetView<LoginWidget, LoginController> {
                 ),
               ),
               RaisedButton(
-                onPressed: () => {
+                onPressed: () {
+                  state.setBaseUrl(_textEditingController.text);
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => NextcloudLoginWebView(state))
-                  ),
+                  );
                 },
                 child: Text("Let's go!"),
               ),

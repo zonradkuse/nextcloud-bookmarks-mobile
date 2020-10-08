@@ -15,6 +15,7 @@ class BookmarkService {
     <User, BookmarkService>{};
 
   factory BookmarkService(User user) {
+    assert(user != null);
     return _cache.putIfAbsent(user, () => BookmarkService._(user));
   }
 

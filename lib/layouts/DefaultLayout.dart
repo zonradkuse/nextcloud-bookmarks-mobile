@@ -15,7 +15,7 @@ class DefaultLayout extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
-        body: HomeWidget(title: 'Bookmarks'),
+        body: HomeWidget(),
       )
     );
   }

@@ -52,7 +52,7 @@ class User {
     final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME, limit: 1);
 
     // no user found!
-    if (maps.length == 0) return User.empty();
+    if (maps.length == 0) return null;
 
     var serverUrl = maps.first[COLUMN_NAME_SERVER_BASE_URL];
     var username = maps.first[COLUMN_NAME_USER_NAME];
