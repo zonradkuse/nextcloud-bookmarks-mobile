@@ -2,7 +2,7 @@ import 'package:bookmarks/abstractions/Controller.dart';
 import 'package:bookmarks/models/User.dart';
 import 'package:bookmarks/widgets/LoginWidget.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bookmarks/views/LoginView.dart';
+import 'package:bookmarks/views/login/LoginView.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginController extends Controller<LoginWidget> {

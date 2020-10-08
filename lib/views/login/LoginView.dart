@@ -1,11 +1,11 @@
 import 'package:bookmarks/controllers/LoginController.dart';
-import 'package:bookmarks/views/NextcloudLoginWebView.dart';
+import 'package:bookmarks/views/login/NextcloudLoginWebView.dart';
 import 'package:bookmarks/widgets/LoginWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:validators/validators.dart';
 
-import '../abstractions/WidgetView.dart';
+import '../../abstractions/WidgetView.dart';
 
 class LoginView extends WidgetView<LoginWidget, LoginController> {
   LoginView (state, {Key key}) : super(state, key: key);
