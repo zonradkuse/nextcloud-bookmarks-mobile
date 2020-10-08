@@ -24,6 +24,7 @@ abstract class Service {
   Future<http.Response> _requestWithParameters<T>(method, List<T> urlParams) async {
     String urlExtension = "";
     for (T param in urlParams) {
+      // for convenience we catch the missing optional urlParam below here
       if (param == null) continue;
 
       urlExtension += "/$param";
