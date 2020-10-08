@@ -27,6 +27,12 @@ class DatabaseProvider {
           "CREATE TABLE ${User.TABLE_NAME}(${User.COLUMN_NAME_USER_NAME} TEXT, ${User.COLUMN_NAME_SERVER_BASE_URL} TEXT)",
         );
       },
+      // use downgrade to clear the database
+      onDowngrade: (db, versionOld, versionNew) {
+        return db.execute(
+          "DELETE FROM ${User.TABLE_NAME};"
+        );
+      },
       version: 1,
     );
 
