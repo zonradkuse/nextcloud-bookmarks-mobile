@@ -106,6 +106,9 @@ class BookmarkListView
               },
               child: Row(
                 children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(10.0, 0, 0, 0),
+                      child: Icon(Icons.folder)),
                   Expanded(
                     child: ListTile(
                       title: Text(
