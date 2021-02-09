@@ -3,45 +3,42 @@ import 'dart:convert';
 import 'package:bookmarks/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:validators/validators.dart';
 
 abstract class Service {
-
-  Service({@required endpointBase, @required this.user}) : this._endpointBase = endpointBase;
+  Service({@required endpointBase, @required this.user})
+      : this._endpointBase = endpointBase;
 
   final String _endpointBase;
 
   final User user;
 
-  Future<http.Response> _request(method, [String endpointExtension = ""]) async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode('${user.username}:${user.appPassword}'));
+  Future<Map<String, dynamic>> _request(method,
+      [String endpointExtension = ""]) async {
+    String basicAuth = 'Basic ' +
+        base64Encode(utf8.encode('${user.username}:${user.appPassword}'));
 
-    return await method(
+    http.Response response = await method(
         this.user.serverUrl + _endpointBase + endpointExtension,
-        headers: <String, String>{'authorization': basicAuth}
-    );
-  }
-
-  Future<http.Response> _requestWithParameters<T>(method, List<T> urlParams) async {
-    String urlExtension = "";
-    for (T param in urlParams) {
-      // for convenience we catch the missing optional urlParam below here
-      if (param == null) continue;
-
-      urlExtension += "/$param";
+        headers: <String, String>{'authorization': basicAuth});
+    if (response.statusCode != 200) {
+      throw new Exception('Request failed');
     }
-
-    return _request(method, urlExtension);
+    if (!isJSON(response.body)) {
+      throw new Exception('Failed to parse response: ' + response.body);
+    }
+    return jsonDecode(response.body);
   }
 
-  Future<http.Response> getRequest<T>([T urlParam]) async =>
-      _requestWithParameters(http.get, [urlParam]);
+  Future<Map<String, dynamic>> getRequest([String urlParam]) async =>
+      _request(http.get, urlParam);
 
-  Future<http.Response> deleteRequest<T>([T urlParam]) async =>
-      _requestWithParameters(http.delete, [urlParam]);
+  Future<Map<String, dynamic>> deleteRequest([String urlParam]) async =>
+      _request(http.delete, urlParam);
 
-  Future<http.Response> postRequest<T>([T urlParam]) async =>
-      _requestWithParameters(http.post, [urlParam]);
+  Future<Map<String, dynamic>> postRequest<T>([String urlParam]) async =>
+      _request(http.post, urlParam);
 
-  Future<http.Response> putRequest<T>([T urlParam]) async =>
-      _requestWithParameters(http.put, [urlParam]);
+  Future<Map<String, dynamic>> putRequest<T>([String urlParam]) async =>
+      _request(http.put, urlParam);
 }

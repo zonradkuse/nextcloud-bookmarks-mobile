@@ -1,6 +1,7 @@
-import 'package:bookmarks/controllers/BookmarkController.dart';
 import 'package:bookmarks/abstractions/AuthenticatedView.dart';
+import 'package:bookmarks/controllers/BookmarkController.dart';
 import 'package:bookmarks/models/Bookmark.dart';
+import 'package:bookmarks/models/Folder.dart';
 import 'package:bookmarks/views/CenteredCard.dart';
 import 'package:bookmarks/widgets/HomeWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,11 +14,20 @@ class BookmarkListView
     extends AuthenticatedView<HomeWidget, BookmarkController> {
   const BookmarkListView(state, {Key key}) : super(state, key: key);
 
+  static int subtitleLength = 42;
+  static int titleLength = 70;
+
   @override
   Widget doBuild(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bookmarks"),
+        title: Text(state.folder == null ? "Bookmarks" : state.folder.title),
+        leading: state.folderId != -1
+            ? BackButton(onPressed: () {
+                state.setFolder(state.folder.parentFolder);
+                state.retrieveBookmarks();
+              })
+            : null,
       ),
       body: RefreshIndicator(
         onRefresh: state.retrieveBookmarks,
@@ -26,6 +36,7 @@ class BookmarkListView
             builder: (context) {
               if (state.bookmarks == null) {
                 state.retrieveBookmarks();
+                state.retrieveFolders();
                 return CircularProgressIndicator();
               } else if (state.bookmarks.length == 0) {
                 return _noBookmarksFound();
@@ -82,6 +93,34 @@ class BookmarkListView
   List<Widget> _rows() {
     List<Widget> result = List();
     assert(state.bookmarks != null);
+
+    if (state.folders != null) {
+      for (Folder folder in state.folders) {
+        result.add(
+          Card(
+            elevation: 2,
+            child: InkWell(
+              onTap: () {
+                state.setFolder(folder.id);
+                state.retrieveBookmarks();
+              },
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ListTile(
+                      title: Text(
+                          "${this._capString(folder.title, BookmarkListView.titleLength)}"),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
     for (Bookmark bookmark in state.bookmarks) {
       result.add(
         Card(
@@ -94,9 +133,10 @@ class BookmarkListView
               children: <Widget>[
                 Expanded(
                   child: ListTile(
-                    title: Text("${bookmark.title}"),
+                    title: Text(
+                        "${this._capString(bookmark.title, BookmarkListView.titleLength)}"),
                     subtitle: Text(
-                        "${bookmark.description != "" ? bookmark.description : bookmark.url}"),
+                        "${this._capString(bookmark.description != "" ? bookmark.description : bookmark.url, BookmarkListView.subtitleLength)}"),
                     visualDensity: VisualDensity.compact,
                   ),
                 ),
@@ -143,5 +183,11 @@ class BookmarkListView
         ];
       },
     );
+  }
+
+  String _capString(String string, int length) {
+    return string.length <= length
+        ? string
+        : string.substring(0, length) + '...';
   }
 }
