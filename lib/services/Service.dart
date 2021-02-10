@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:bookmarks/models/User.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:validators/validators.dart';
 
@@ -28,6 +29,22 @@ abstract class Service {
       throw new Exception('Failed to parse response: ' + response.body);
     }
     return jsonDecode(response.body);
+  }
+
+  Image getImage([String endpointExtension = '']) {
+    String basicAuth = 'Basic ' +
+        base64Encode(utf8.encode('${user.username}:${user.appPassword}'));
+
+    Image image = Image.network(
+        this.user.serverUrl + _endpointBase + endpointExtension,
+        width: 32.0,
+        height: 32.0,
+        headers: <String, String>{'authorization': basicAuth},
+        errorBuilder:
+            (BuildContext build, Object object, StackTrace stackTrace) =>
+                Icon(Icons.bookmark_border, size: 32.0));
+
+    return image;
   }
 
   Future<Map<String, dynamic>> getRequest([String urlParam]) async =>

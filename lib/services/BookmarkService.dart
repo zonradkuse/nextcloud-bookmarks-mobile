@@ -37,7 +37,9 @@ class BookmarkService extends Service {
     if (response["status"] != "success") return result;
 
     for (Map<String, dynamic> element in response["data"]) {
-      result.add(Bookmark.fromJson(element));
+      Bookmark bookmark = Bookmark.fromJson(element);
+      bookmark.setFavicon(getImage('/' + bookmark.id.toString() + '/favicon'));
+      result.add(bookmark);
     }
 
     return result;

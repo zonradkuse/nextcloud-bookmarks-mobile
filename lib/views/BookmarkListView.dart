@@ -30,15 +30,15 @@ class BookmarkListView
             : null,
       ),
       body: RefreshIndicator(
-        onRefresh: state.retrieveBookmarks,
+        onRefresh: state.refresh,
         child: Center(
           child: Builder(
             builder: (context) {
               if (state.bookmarks == null) {
-                state.retrieveBookmarks();
-                state.retrieveFolders();
+                state.refresh();
                 return CircularProgressIndicator();
-              } else if (state.bookmarks.length == 0) {
+              } else if (state.bookmarks.length == 0 &&
+                  state.folders.length == 0) {
                 return _noBookmarksFound();
               }
 
@@ -102,12 +102,11 @@ class BookmarkListView
             child: InkWell(
               onTap: () {
                 state.setFolder(folder.id);
-                state.retrieveBookmarks();
               },
               child: Row(
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.fromLTRB(10.0, 0, 0, 0),
+                      padding: EdgeInsets.only(left: 10.0),
                       child: Icon(Icons.folder)),
                   Expanded(
                     child: ListTile(
@@ -134,6 +133,9 @@ class BookmarkListView
             },
             child: Row(
               children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: bookmark.favicon),
                 Expanded(
                   child: ListTile(
                     title: Text(

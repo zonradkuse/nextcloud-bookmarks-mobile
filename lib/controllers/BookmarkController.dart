@@ -26,9 +26,8 @@ class BookmarkController extends Controller<HomeWidget> {
   Folder get folder =>
       this._folderId == -1 ? null : findFolder(this._folders, this._folderId);
 
-  List<Folder> get folders => this._folderId == -1
-      ? this._folders
-      : findFolder(this._folders, this._folderId).children;
+  List<Folder> get folders =>
+      this._folderId == -1 ? this._folders : folder.children;
 
   static Folder findFolder(List<Folder> folders, int folderId) {
     if (folders == null) {
@@ -44,6 +43,11 @@ class BookmarkController extends Controller<HomeWidget> {
       }
     }
     return null;
+  }
+
+  Future<void> refresh() async {
+    await this.retrieveBookmarks();
+    await this.retrieveFolders();
   }
 
   Future<void> retrieveBookmarks() async {
@@ -103,11 +107,15 @@ class BookmarkController extends Controller<HomeWidget> {
   @override
   Widget build(BuildContext context) => BookmarkListView(this);
 
-  void setFolder(int id) {
+  Future<void> setFolder(int id) async {
     if (findFolder(this._folders, id) == null) {
-      this._folderId = -1;
-      return;
+      id = -1;
     }
+
     this._folderId = id;
+    await retrieveBookmarks();
+    setState(() {
+      _folderId = id;
+    });
   }
 }
