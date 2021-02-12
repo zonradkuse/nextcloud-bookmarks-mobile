@@ -140,8 +140,8 @@ class BookmarkListView
                   child: ListTile(
                     title: Text(
                         "${this._capString(bookmark.title, BookmarkListView.titleLength)}"),
-                    subtitle: Text(
-                        "${this._capString(bookmark.description != "" ? bookmark.description : bookmark.url, BookmarkListView.subtitleLength)}"),
+                    subtitle:
+                        Text("${this._prepareBookmarkSubtitle(bookmark)}"),
                     visualDensity: VisualDensity.compact,
                   ),
                 ),
@@ -188,6 +188,14 @@ class BookmarkListView
         ];
       },
     );
+  }
+
+  String _prepareBookmarkSubtitle(Bookmark bookmark) {
+    String subtitle = bookmark.description;
+    if (subtitle == '') {
+      subtitle = bookmark.url;
+    }
+    return this._capString(subtitle, BookmarkListView.subtitleLength);
   }
 
   String _capString(String string, int length) {
