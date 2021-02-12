@@ -14,8 +14,8 @@ class BookmarkListView
     extends AuthenticatedView<HomeWidget, BookmarkController> {
   const BookmarkListView(state, {Key key}) : super(state, key: key);
 
-  static int subtitleLength = 42;
-  static int titleLength = 70;
+  static const int subtitleLength = 42;
+  static const int titleLength = 70;
 
   @override
   Widget doBuild(BuildContext context) {
