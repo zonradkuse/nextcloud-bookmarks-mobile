@@ -15,13 +15,13 @@ issue. We can guide you from there :)
 
 Any code change should be done through PRs.
 
-As the [board](https://github.com/zonradkuse/nextcloud-bookmarks-mobile/projects/1) suggests, any issue will go through predefined steps
+As the [boards](https://github.com/zonradkuse/nextcloud-bookmarks-mobile/projects) suggests, any issue/pr will go through predefined steps
 * TODO -- equivalent of a backlog. This is the starting point of any issue
 * In Progress -- the issue has an assignee and work has started in any way
 * Review in progress -- the PR has been opened and is being reviews
 * Reviewer approved -- the PR is approved but not merged, yet
 * Ready for deployment -- the PR merged and waiting for a deployment
-* Done -- the PR is deployed
+* Done -- the PR is deployed and the issue is fully implemented
 
 If any issue is currently blocked by any dependency (internal or external) it will go to
 __Blocked__.
