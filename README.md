@@ -7,7 +7,7 @@ Access and manage your nextcloud bookmarks on your phone!
 ## Contributing
 
 Feel free to open issues or start discussions in the already open issues. If you would like
-to contribute code check the [kanban board](projects/1), please. Unassigned issues that are
+to contribute code check the [kanban board](https://github.com/zonradkuse/nextcloud-bookmarks-mobile/projects/1), please. Unassigned issues that are
 in TODO are open for contributions. Let us know that you would like to start working on a specific
 issue. We can guide you from there :)
 
@@ -15,7 +15,7 @@ issue. We can guide you from there :)
 
 Any code change should be done through PRs.
 
-As the [board](projects/1) suggests, any issue will go through predefined steps
+As the [board](https://github.com/zonradkuse/nextcloud-bookmarks-mobile/projects/1) suggests, any issue will go through predefined steps
 * TODO -- equivalent of a backlog. This is the starting point of any issue
 * In Progress -- the issue has an assignee and work has started in any way
 * Review in progress -- the PR has been opened and is being reviews
