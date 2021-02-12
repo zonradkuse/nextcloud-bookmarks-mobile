@@ -29,8 +29,11 @@ class BookmarkController extends Controller<HomeWidget> {
     return findFolder(this._folders, this._folderId);
   }
 
-  List<Folder> get folders =>
-      this._folderId == -1 ? this._folders : folder.children;
+  List<Folder> get folders {
+    if (this._folderId == -1 ) return this._folders;
+    
+    return folder.children;
+  }
 
   static Folder findFolder(List<Folder> folders, int folderId) {
     if (folders == null) {
