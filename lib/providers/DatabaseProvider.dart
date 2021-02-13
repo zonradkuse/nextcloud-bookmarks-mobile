@@ -3,15 +3,19 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseProvider {
-  static Database _database;
+  static bool _initialized = false;
+  static late Database _database;
 
   // empty private constructor to prevent initialization
   DatabaseProvider._private();
 
   static Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_initialized) return _database;
 
-    return await _initDatabase();
+    _database = await _initDatabase();
+    _initialized = true;
+
+    return _database;
   }
 
   static Future<Database> _initDatabase() async {

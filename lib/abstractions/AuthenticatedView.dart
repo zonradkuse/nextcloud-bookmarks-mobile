@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 abstract class AuthenticatedView<TWidget, TController> extends WidgetView<TWidget, TController> {
 
-  const AuthenticatedView(state, {Key key}) : super(state, key: key);
+  const AuthenticatedView(state, {Key? key}) : super(state, key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ abstract class AuthenticatedView<TWidget, TController> extends WidgetView<TWidge
       // i.e. for any action we perform 2 db queries which we don't actually need
       future: User.findOne(),
       initialData: null,
-      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.data == null) {
           // show LoginWidget if we couldn't find any user
           return LoginWidget();

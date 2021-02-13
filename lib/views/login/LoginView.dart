@@ -9,7 +9,7 @@ import 'package:validators/validators.dart';
 import '../../abstractions/WidgetView.dart';
 
 class LoginView extends WidgetView<LoginWidget, LoginController> {
-  LoginView(state, {Key key}) : super(state, key: key);
+  LoginView(state, {Key? key}) : super(state, key: key);
 
   final TextEditingController _textEditingController = TextEditingController();
 

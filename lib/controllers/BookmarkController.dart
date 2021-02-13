@@ -10,15 +10,15 @@ import 'package:url_launcher/url_launcher.dart';
 class BookmarkController extends Controller<HomeWidget> {
   int _counter = 0;
 
-  List<Bookmark> _bookmarks;
+  List<Bookmark> _bookmarks = [];
 
   int get counter => _counter;
   List<Bookmark> get bookmarks => _bookmarks;
 
   Future<void> retrieveBookmarks() async {
-    User user = await User.findOne();
+    User? user = await User.findOne();
 
-    List<Bookmark> bookmarks = List();
+    List<Bookmark> bookmarks = [];
     if (user != null) {
       bookmarks = await BookmarkService.of(user).retrieveAllBookmarks();
     }
@@ -30,12 +30,14 @@ class BookmarkController extends Controller<HomeWidget> {
 
   void resetBookmarks() {
     setState(() {
-      _bookmarks = null;
+      _bookmarks = [];
     });
   }
 
   Future<void> delete(Bookmark bookmark) async {
-    User user = await User.findOne();
+    User? user = await User.findOne();
+
+    if (user == null) return;
     BookmarkService.of(user).delete(bookmark);
 
     setState(() {

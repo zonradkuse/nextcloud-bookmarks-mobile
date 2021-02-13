@@ -5,7 +5,7 @@ abstract class WidgetView<TWidget, TState> extends StatelessWidget {
 
   TWidget get widget => (state as State).widget as TWidget;
 
-  const WidgetView(this.state, {Key key}) : super(key: key);
+  const WidgetView(this.state, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context);

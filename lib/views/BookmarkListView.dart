@@ -11,7 +11,7 @@ enum BookmarkAction { EDIT, DELETE, SHARE }
 
 class BookmarkListView
     extends AuthenticatedView<HomeWidget, BookmarkController> {
-  const BookmarkListView(state, {Key key}) : super(state, key: key);
+  const BookmarkListView(state, {Key? key}) : super(state, key: key);
 
   @override
   Widget doBuild(BuildContext context) {
@@ -80,7 +80,7 @@ class BookmarkListView
   }
 
   List<Widget> _rows() {
-    List<Widget> result = List();
+    List<Widget> result = List.empty();
     assert(state.bookmarks != null);
     for (Bookmark bookmark in state.bookmarks) {
       result.add(
@@ -130,7 +130,7 @@ class BookmarkListView
       },
       icon: Icon(Icons.more_vert),
       itemBuilder: (BuildContext context) {
-        return <PopupMenuEntry<BookmarkAction>>[
+        return <PopupMenuEntry<BookmarkAction?>>[
           PopupMenuItem(value: BookmarkAction.EDIT, child: Text('Edit')),
           PopupMenuItem(value: BookmarkAction.SHARE, child: Text('Share')),
           PopupMenuDivider(),
