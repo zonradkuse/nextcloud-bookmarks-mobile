@@ -46,7 +46,7 @@ class User {
     return this;
   }
 
-  static Future<User> findOne() async {
+  static Future<User?> findOne() async {
     Database db = await DatabaseProvider.database;
 
     final List<Map<String, dynamic>> maps = await db.query(TABLE_NAME, limit: 1);
@@ -61,7 +61,4 @@ class User {
     return User(serverUrl, username, password);
   }
 
-  static User empty() {
-    return User(null, null, null);
-  }
 }

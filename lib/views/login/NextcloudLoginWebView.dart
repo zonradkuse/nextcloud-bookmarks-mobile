@@ -9,7 +9,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../abstractions/WidgetView.dart';
 
 class NextcloudLoginWebView extends WidgetView<LoginWidget, LoginController> {
-  const NextcloudLoginWebView(state, {Key key}) : super(state, key: key);
+  const NextcloudLoginWebView(state, {Key? key}) : super(state, key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class NextcloudLoginWebView extends WidgetView<LoginWidget, LoginController> {
           controller.loadUrl("${state.baseUrl}/index.php/login/flow", headers: headers);
         },
         navigationDelegate: (NavigationRequest request) {
-          User user = state.createUserFromRequestIfExists(request);
+          User? user = state.createUserFromRequestIfExists(request);
           if (user == null) {
             return NavigationDecision.navigate;
           }

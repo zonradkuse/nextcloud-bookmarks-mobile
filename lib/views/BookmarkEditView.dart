@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class BookmarkEditView
     extends AuthenticatedView<HomeWidget, BookmarkController> {
-  const BookmarkEditView(state, {Key key}) : super(state, key: key);
+  const BookmarkEditView(state, {Key? key}) : super(state, key: key);
 
   Widget doBuild(BuildContext context) {
     return Stepper(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CenteredCard extends StatelessWidget {
-  CenteredCard({@required this.child, this.padding = const EdgeInsets.all(20.0)});
+  CenteredCard({@required child, this.padding = const EdgeInsets.all(20.0)}) : this.child = child;
 
   final Widget child;
 

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 abstract class Service {
 
-  Service({@required endpointBase, @required this.user}) : this._endpointBase = endpointBase;
+  Service({@required endpointBase, @required user}) : this._endpointBase = endpointBase, this.user = user;
 
   final String _endpointBase;
 
@@ -33,15 +33,15 @@ abstract class Service {
     return _request(method, urlExtension);
   }
 
-  Future<http.Response> getRequest<T>([T urlParam]) async =>
+  Future<http.Response> getRequest<T>([T? urlParam]) async =>
       _requestWithParameters(http.get, [urlParam]);
 
-  Future<http.Response> deleteRequest<T>([T urlParam]) async =>
+  Future<http.Response> deleteRequest<T>([T? urlParam]) async =>
       _requestWithParameters(http.delete, [urlParam]);
 
-  Future<http.Response> postRequest<T>([T urlParam]) async =>
+  Future<http.Response> postRequest<T>([T? urlParam]) async =>
       _requestWithParameters(http.post, [urlParam]);
 
-  Future<http.Response> putRequest<T>([T urlParam]) async =>
+  Future<http.Response> putRequest<T>([T? urlParam]) async =>
       _requestWithParameters(http.put, [urlParam]);
 }

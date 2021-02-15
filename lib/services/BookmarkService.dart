@@ -25,7 +25,7 @@ class BookmarkService extends Service {
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${this.user.username}:${this.user.appPassword}'));
     http.Response response = await getRequest();
 
-    List<Bookmark> result = List<Bookmark>();
+    List<Bookmark> result = [];
     if (response.statusCode == 200 && isJSON(response.body)) {
       Map<String, dynamic> parsed = jsonDecode(response.body);
       if (parsed["status"] != "success") return result;
