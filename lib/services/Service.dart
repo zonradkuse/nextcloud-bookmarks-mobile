@@ -19,6 +19,12 @@ abstract class Service {
     String basicAuth = 'Basic ' +
         base64Encode(utf8.encode('${user.username}:${user.appPassword}'));
 
+    if (endpointExtension != '' &&
+        endpointExtension[0] != '/' &&
+        endpointExtension[0] != '?') {
+      endpointExtension = '/' + endpointExtension;
+    }
+
     http.Response response = await method(
         this.user.serverUrl + _endpointBase + endpointExtension,
         headers: <String, String>{'authorization': basicAuth});

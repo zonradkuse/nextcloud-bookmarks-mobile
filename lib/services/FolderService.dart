@@ -31,7 +31,7 @@ class FolderService extends Service {
   }
 
   void delete(Folder folder) {
-    super.deleteRequest('/' + folder.id.toString());
+    super.deleteRequest(folder.id.toString());
   }
 
   static FolderService of(User user) {
