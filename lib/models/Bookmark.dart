@@ -1,8 +1,12 @@
+import 'package:flutter/widgets.dart';
+
 class Bookmark {
   int _id;
   String _url;
   String _title;
   String _description;
+  Image _favicon;
+  Image _image;
 
   List<String> _tags;
   List<String> _folders;
@@ -14,6 +18,16 @@ class Bookmark {
   String get url => _url;
   String get title => _title;
   String get description => _description;
+  Image get favicon => _favicon;
+  Image get image => _image;
+
+  void setFavicon(Image url) {
+    this._favicon = url;
+  }
+
+  void setImage(Image url) {
+    this._favicon = url;
+  }
 
   static Bookmark fromJson(Map<String, dynamic> data) {
     return Bookmark(

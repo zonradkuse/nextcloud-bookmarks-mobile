@@ -1,17 +1,12 @@
-import 'dart:convert';
-
 import 'package:bookmarks/models/Bookmark.dart';
 import 'package:bookmarks/models/User.dart';
 import 'package:bookmarks/services/Service.dart';
 
-import 'package:http/http.dart' as http;
-import 'package:validators/validators.dart';
-
 class BookmarkService extends Service {
-  static const _ENDPOINT_BASE = "/index.php/apps/bookmarks/public/rest/v2/bookmark";
+  static const _ENDPOINT_BASE =
+      "/index.php/apps/bookmarks/public/rest/v2/bookmark";
 
-  static final Map<User, BookmarkService> _cache =
-    <User, BookmarkService>{};
+  static final Map<User, BookmarkService> _cache = <User, BookmarkService>{};
 
   factory BookmarkService(User user) {
     assert(user != null);
@@ -22,24 +17,36 @@ class BookmarkService extends Service {
   BookmarkService._(user) : super(endpointBase: _ENDPOINT_BASE, user: user);
 
   Future<List<Bookmark>> retrieveAllBookmarks() async {
-    String basicAuth = 'Basic ' + base64Encode(utf8.encode('${this.user.username}:${this.user.appPassword}'));
-    http.Response response = await getRequest();
+    Map<String, dynamic> response = await getRequest('?page=-1');
 
     List<Bookmark> result = List<Bookmark>();
-    if (response.statusCode == 200 && isJSON(response.body)) {
-      Map<String, dynamic> parsed = jsonDecode(response.body);
-      if (parsed["status"] != "success") return result;
+    if (response["status"] != "success") return result;
 
-      for (Map<String, dynamic> element in parsed["data"]) {
-        result.add(Bookmark.fromJson(element));
-      }
+    for (Map<String, dynamic> element in response["data"]) {
+      result.add(Bookmark.fromJson(element));
     }
 
     return result;
   }
-  
+
+  Future<List<Bookmark>> retrieveBookmarksOfFolder(int folderId) async {
+    Map<String, dynamic> response =
+        await getRequest('?page=-1&folder=' + folderId.toString());
+
+    List<Bookmark> result = List<Bookmark>();
+    if (response["status"] != "success") return result;
+
+    for (Map<String, dynamic> element in response["data"]) {
+      Bookmark bookmark = Bookmark.fromJson(element);
+      bookmark.setFavicon(getImage('/' + bookmark.id.toString() + '/favicon'));
+      result.add(bookmark);
+    }
+
+    return result;
+  }
+
   void delete(Bookmark bookmark) {
-    super.deleteRequest(bookmark.id);
+    super.deleteRequest('/' + bookmark.id.toString());
   }
 
   static BookmarkService of(User user) {
